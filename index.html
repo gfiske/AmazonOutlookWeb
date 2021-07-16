@@ -1,0 +1,96 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Amazon Outlook</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+    #viewDiv.esriPopupWrapper .zoomTo {
+      display: none;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.20/"></script>
+
+  <script>
+    require(["esri/config", "esri/WebMap", "esri/views/MapView", "esri/widgets/ScaleBar", "esri/widgets/Legend", "esri/widgets/LayerList"], function(esriConfig, WebMap, MapView, ScaleBar, Legend, LayerList) {
+      esriConfig.apiKey = "AAPKc758424f9fd4486d9134df747a57c2fdrq8MzZy9VHqbfPzXNut5SvvoABhJdzImRZOvLbw3qin0_dz9IeNBEOADq9Up7hyG";
+      const webmap = new WebMap({
+        portalItem: {
+          id: "1c34253aa1ed4228b94705be231d5e4b"
+        }
+      });
+      const view = new MapView({
+        map: webmap,
+        center: [-58, -5],
+        //zoom: 6,
+        container: "viewDiv" // Div element
+      });
+
+
+      view.constraints = {
+        // geometry: { // Constrain lateral movement to Lower Manhattan
+        //   type: "extent",
+        //   xmin: -22.2,
+        //   ymin:  40.700,
+        //   xmax: -38,
+        //   ymax:  13
+        // },
+        minScale: 12000000, // User cannot zoom out beyond a scale of 1:500,000
+        maxScale: 50000, // User can overzoom tiles
+        rotationEnabled: false // Disables map rotation
+      };
+
+
+      const scalebar = new ScaleBar({
+        view: view
+      });
+      view.ui.add(scalebar, "bottom-left");
+      // const legend = new Legend({
+      //   view: view
+      // });
+      // view.ui.add(legend, "top-right");
+
+      // Add a legend instance to the panel of a
+      // ListItem in a LayerList instance
+      const layerList = new LayerList({
+          view: view,
+          listItemCreatedFunction: function(event) {
+            const item = event.item;
+            if (item.layer.type != "group") {
+              // don't show legend twice
+              item.panel = {
+                content: "legend",
+                open: true,
+              };
+            }
+          }
+        });
+
+        layerList.visibleElements = {
+          statusIndicators: false
+        };
+
+
+        view.ui.add(layerList, "top-right");
+
+    });
+  </script>
+
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+</body>
+
+</html>
