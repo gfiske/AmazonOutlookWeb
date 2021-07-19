@@ -14,9 +14,7 @@
       height: 100%;
       width: 100%;
     }
-    #viewDiv.esriPopupWrapper .zoomTo {
-      display: none;
-    }
+
   </style>
 
   <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css">
@@ -34,18 +32,16 @@
         map: webmap,
         center: [-58, -5],
         //zoom: 6,
-        container: "viewDiv" // Div element
+        container: "viewDiv", // Div element
+        popup: {
+           actions: []
+          }
       });
 
+      //popup = view.popup;
+      //popup.actions = [];
 
       view.constraints = {
-        // geometry: { // Constrain lateral movement to Lower Manhattan
-        //   type: "extent",
-        //   xmin: -22.2,
-        //   ymin:  40.700,
-        //   xmax: -38,
-        //   ymax:  13
-        // },
         minScale: 13000000, // User cannot zoom out beyond a scale of 1:500,000
         maxScale: 600000, // User can overzoom tiles
         rotationEnabled: false // Disables map rotation
@@ -56,10 +52,6 @@
         view: view
       });
       view.ui.add(scalebar, "bottom-left");
-      // const legend = new Legend({
-      //   view: view
-      // });
-      // view.ui.add(legend, "top-right");
 
       // Add a legend instance to the panel of a
       // ListItem in a LayerList instance
@@ -80,9 +72,9 @@
         layerList.visibleElements = {
           statusIndicators: false
         };
-
-
         view.ui.add(layerList, "top-right");
+
+
 
     });
   </script>
